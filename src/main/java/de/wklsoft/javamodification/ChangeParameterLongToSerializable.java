@@ -13,36 +13,23 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ * Define which classes to manipulate.
  * Created by wkl on 16.04.16.
  */
 public class ChangeParameterLongToSerializable extends AbstractParserConfig {
 
-    public ChangeParameterLongToSerializable(){
-        this.klassenFilter = new Predicate<ClassOrInterfaceDeclaration>() {
 
-            @Override
-            public boolean test(ClassOrInterfaceDeclaration clazz) {
-                return clazz.getName().endsWith("Helper") && ParserHelper.checkExtends(clazz, "Abstract" + clazz.getName());
-            }
-        };
+
+    public boolean modifyImport(CompilationUnit cu){
+        return ParserHelper.addImportIfMissing(cu, "java.io.Serializable");
     }
 
-    @Override
-    public  boolean aendere(CompilationUnit cu) {
-        final boolean[] changed = new boolean[1];
-        List<TypeDeclaration> types = cu.getTypes();
-
-        for (TypeDeclaration type : types) {
-            type.getMembers().stream().filter(member -> member instanceof MethodDeclaration).map(member -> (MethodDeclaration)member).
-                    forEach(method -> changed[0] = changeMethod(method) | changed[0]);
-        }
-        if(changed[0]){
-            ParserHelper.checkImport(cu,"java.io.Serializable");
-        }
-        return changed[0];
-    }
-
-    private  boolean changeMethod(MethodDeclaration method) {
+    /**
+     * Change the Parameters of the Methods from Long to Serializable
+     * @param method
+     * @return
+     */
+    public  boolean changeMethod(MethodDeclaration method) {
         boolean changed = false;
         List<Parameter> parameters = method.getParameters();
         for (Parameter parameter : parameters) {

@@ -3,42 +3,58 @@ package de.wklsoft.javamodification;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 /**
  * Created by wkl on 16.04.16.
  */
 public class Parser {
-    public static void main(String[] args) throws Exception {
-        int anzahl=0;
-        Parser parser = new Parser();
-        File f=new File("src/test/resources/BetriebHelper.java");
+    private boolean dryRun;
+    private String sourcePath = "src/test/resources/";
+    private String[] extension = {"java"};
+    private String destPath = "target/";
+    private List<AbstractParserConfig> configList = new ArrayList<>();
+    Predicate<ClassOrInterfaceDeclaration> klassenFilter;
 
-        FileInputStream in = new FileInputStream(f);
+    public Parser(Predicate<ClassOrInterfaceDeclaration> klassenFilter){
+        this.klassenFilter = klassenFilter;
+    }
 
-        CompilationUnit cu;
-        try {
-            // parse the file
-            cu = JavaParser.parse(in);
-        } finally {
-            in.close();
+    public void run() throws Exception {
+        int anzahl = 0;
+        Collection<File> files = FileUtils.listFiles(new File(sourcePath), extension, true);
+        for (File file : files) {
+            FileInputStream in = new FileInputStream(file);
+
+
+            CompilationUnit cu;
+            try {
+                // parse the file
+                cu = JavaParser.parse(in);
+            } finally {
+                in.close();
+            }
+            boolean changed = false;
+            for(AbstractParserConfig config : configList){
+                changed = verarbeite(cu, config) || changed;
+            }
+            if (changed) {
+                anzahl++;
+                if(!dryRun){
+                    FileUtils.writeStringToFile(new File(destPath + file.getName()), cu.toString(), "UTF-8");
+                }
+                System.out.println(cu);
+            }
+
         }
-        ChangeParameterLongToSerializable config = new ChangeParameterLongToSerializable();
-
-        boolean changed = parser.verarbeite(cu, config);
-        if (changed) {
-            anzahl++;
-            FileUtils.writeStringToFile(new File("target/"+f.getName()),cu.toString(),"UTF-8");
-            System.out.println(cu);
-        }
-        System.out.println(anzahl +" Files changed!");
+        System.out.println(anzahl + " Files changed!");
     }
 
     private boolean verarbeite(CompilationUnit cu, AbstractParserConfig config) {
@@ -47,13 +63,33 @@ public class Parser {
         boolean klasseBearbeiten = cu.getTypes().stream()
                 .filter(t -> t instanceof ClassOrInterfaceDeclaration)
                 .map(t -> (ClassOrInterfaceDeclaration) t)
-                .filter(config.getKlassenFilter()).count()>0;
+                .filter(getKlassenFilter()).count() > 0;
         if (klasseBearbeiten) {
-            changed = config.aendere(cu);
+            changed = config.change(cu);
         }
 
         return changed;
 
+    }
+
+    public void dryRun() {
+        this.dryRun = true;
+    }
+
+    public void setSourcePath(String sourcePath) {
+        this.sourcePath = sourcePath;
+    }
+
+    public void setDestPath(String destPath){
+        this.destPath = destPath;
+    }
+
+    public void addConfig(AbstractParserConfig config){
+        configList.add(config);
+    }
+
+    public  Predicate<ClassOrInterfaceDeclaration> getKlassenFilter(){
+        return klassenFilter;
     }
 
 }

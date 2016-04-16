@@ -9,8 +9,10 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import java.util.List;
 
 /**
+ * Some Helper-Methods
  * Created by wkl on 16.04.16.
  */
+
 public class ParserHelper {
 
     public static  boolean checkExtends(ClassOrInterfaceDeclaration type, String name) {
@@ -25,7 +27,7 @@ public class ParserHelper {
         return toChange;
     }
 
-    public static boolean checkImport(CompilationUnit cu, String clzImport){
+    public static boolean addImportIfMissing(CompilationUnit cu, String clzImport){
         boolean changed = false;
         ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr(clzImport),false,false);
         if(!cu.getImports().contains(importDeclaration)){
