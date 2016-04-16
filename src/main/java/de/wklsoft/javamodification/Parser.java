@@ -21,7 +21,7 @@ public class Parser {
     private String sourcePath = "src/test/resources/";
     private String[] extension = {"java"};
     private String destPath = "target/";
-    private List<AbstractMethodManipulator> configList = new ArrayList<>();
+    private List<AbstractManipulator> configList = new ArrayList<>();
     Predicate<ClassOrInterfaceDeclaration> klassenFilter;
 
     public Parser(Predicate<ClassOrInterfaceDeclaration> klassenFilter){
@@ -43,7 +43,7 @@ public class Parser {
                 in.close();
             }
             boolean changed = false;
-            for(AbstractMethodManipulator config : configList){
+            for(AbstractManipulator config : configList){
                 changed = verarbeite(cu, config) || changed;
             }
             if (changed) {
@@ -58,7 +58,7 @@ public class Parser {
         System.out.println(anzahl + " Files changed!");
     }
 
-    private boolean verarbeite(CompilationUnit cu, AbstractMethodManipulator config) {
+    private boolean verarbeite(CompilationUnit cu, AbstractManipulator config) {
         boolean changed = false;
         //check if class is to change
         boolean klasseBearbeiten = cu.getTypes().stream()
@@ -85,7 +85,7 @@ public class Parser {
         this.destPath = destPath;
     }
 
-    public void addConfig(AbstractMethodManipulator config){
+    public void addConfig(AbstractManipulator config){
         configList.add(config);
     }
 

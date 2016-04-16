@@ -4,6 +4,7 @@ package de.wklsoft.javamodification;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import de.wklsoft.javamodification.worker.ChangeMethodeName;
 import de.wklsoft.javamodification.worker.ChangeParameterLongToSerializable;
+import de.wklsoft.javamodification.worker.RemoveMethod;
 
 import java.util.function.Predicate;
 
@@ -36,6 +37,7 @@ public class StartParser {
 
         parser.addConfig(new ChangeParameterLongToSerializable());
         parser.addConfig(new ChangeMethodeName());
+        parser.addConfig(new RemoveMethod());
         parser.run();
     }
 

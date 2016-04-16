@@ -16,6 +16,10 @@ public class BetriebHelper extends AbstractBetriebHelper {
     public void methodeC(String a, String b) {
 
     }
+    @Override
+    public void deleteMe(int a, int b) {
+
+    }
     class KlasseB{
         public void methodeC(Long a){
 

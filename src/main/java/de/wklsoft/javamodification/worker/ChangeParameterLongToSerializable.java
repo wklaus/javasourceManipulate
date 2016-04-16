@@ -33,11 +33,13 @@ public class ChangeParameterLongToSerializable extends AbstractMethodManipulator
         List<Parameter> parameters = method.getParameters();
         for (Parameter parameter : parameters) {
             Type type = parameter.getType();
-
-            if (((ClassOrInterfaceType) ((ReferenceType) type).getType()).getName().equals("Long")) {
-                parameter.setType(new ClassOrInterfaceType("Serializable"));
-                changed = true;
+            if(type instanceof ReferenceType){
+                if (((ClassOrInterfaceType) ((ReferenceType) type).getType()).getName().equals("Long")) {
+                    parameter.setType(new ClassOrInterfaceType("Serializable"));
+                    changed = true;
+                }
             }
+
         }
         return changed;
     }
