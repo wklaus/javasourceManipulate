@@ -6,7 +6,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
-import de.wklsoft.javamodification.AbstractMethodManipulator;
+import de.wklsoft.javamodification.SourceMethodManipulator;
 import de.wklsoft.javamodification.ParserHelper;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * Define which classes to manipulate.
  * Created by wkl on 16.04.16.
  */
-public class ChangeParameterLongToSerializable extends AbstractMethodManipulator {
+public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
 
 
 

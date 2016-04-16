@@ -1,18 +1,16 @@
 package de.wklsoft.javamodification;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Base Class for manipulation
  * Created by wkl on 16.04.16.
  */
-public abstract class AbstractMethodManipulator extends AbstractManipulator {
+public abstract class SourceMethodManipulator implements SourceManipulator {
 
     /**
      * Do the manipulation of the source

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Iterate over all Files an manipulate it with the configured AbstractMethodManipulator
+ * Iterate over all Files an manipulate it with the configured SourceMethodManipulator
  * Created by wkl on 16.04.16.
  */
 public class Parser {
@@ -21,7 +21,7 @@ public class Parser {
     private String sourcePath = "src/test/resources/";
     private String[] extension = {"java"};
     private String destPath = "target/";
-    private List<AbstractManipulator> configList = new ArrayList<>();
+    private List<SourceManipulator> configList = new ArrayList<>();
     Predicate<ClassOrInterfaceDeclaration> klassenFilter;
 
     public Parser(Predicate<ClassOrInterfaceDeclaration> klassenFilter){
@@ -43,7 +43,7 @@ public class Parser {
                 in.close();
             }
             boolean changed = false;
-            for(AbstractManipulator config : configList){
+            for(SourceManipulator config : configList){
                 changed = verarbeite(cu, config) || changed;
             }
             if (changed) {
@@ -58,7 +58,7 @@ public class Parser {
         System.out.println(anzahl + " Files changed!");
     }
 
-    private boolean verarbeite(CompilationUnit cu, AbstractManipulator config) {
+    private boolean verarbeite(CompilationUnit cu, SourceManipulator config) {
         boolean changed = false;
         //check if class is to change
         boolean klasseBearbeiten = cu.getTypes().stream()
@@ -85,7 +85,7 @@ public class Parser {
         this.destPath = destPath;
     }
 
-    public void addConfig(AbstractManipulator config){
+    public void addConfig(SourceManipulator config){
         configList.add(config);
     }
 

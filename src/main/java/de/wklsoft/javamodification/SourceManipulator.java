@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by wkl on 16.04.16.
  */
-public abstract class AbstractManipulator {
+public interface SourceManipulator {
 
     /**
      * Do the manipulation of the source
@@ -17,5 +17,5 @@ public abstract class AbstractManipulator {
      * @param cu
      * @return
      */
-    public abstract boolean change(CompilationUnit cu);
+    public boolean change(CompilationUnit cu);
 }

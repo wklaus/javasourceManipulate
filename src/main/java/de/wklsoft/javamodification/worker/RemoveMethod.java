@@ -3,16 +3,15 @@ package de.wklsoft.javamodification.worker;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import de.wklsoft.javamodification.AbstractManipulator;
+import de.wklsoft.javamodification.SourceManipulator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by wkl on 16.04.16.
  */
-public class RemoveMethod extends AbstractManipulator{
+public class RemoveMethod implements SourceManipulator {
     @Override
     public boolean change(CompilationUnit cu) {
         boolean changed = false;

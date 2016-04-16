@@ -1,12 +1,12 @@
 package de.wklsoft.javamodification.worker;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
-import de.wklsoft.javamodification.AbstractMethodManipulator;
+import de.wklsoft.javamodification.SourceMethodManipulator;
 
 /**
  * Created by wkl on 16.04.16.
  */
-public class ChangeMethodeName extends AbstractMethodManipulator {
+public class ChangeMethodeName extends SourceMethodManipulator {
 
 
     @Override
