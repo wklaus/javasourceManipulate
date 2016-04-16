@@ -2,6 +2,8 @@ package de.wklsoft.javamodification;
 
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import de.wklsoft.javamodification.worker.ChangeMethodeName;
+import de.wklsoft.javamodification.worker.ChangeParameterLongToSerializable;
 
 import java.util.function.Predicate;
 

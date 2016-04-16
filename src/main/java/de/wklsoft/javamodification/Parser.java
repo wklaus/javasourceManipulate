@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ * Iterate over all Files an manipulate it with the configured AbstractMethodManipulator
  * Created by wkl on 16.04.16.
  */
 public class Parser {
@@ -20,7 +21,7 @@ public class Parser {
     private String sourcePath = "src/test/resources/";
     private String[] extension = {"java"};
     private String destPath = "target/";
-    private List<AbstractParserConfig> configList = new ArrayList<>();
+    private List<AbstractMethodManipulator> configList = new ArrayList<>();
     Predicate<ClassOrInterfaceDeclaration> klassenFilter;
 
     public Parser(Predicate<ClassOrInterfaceDeclaration> klassenFilter){
@@ -42,7 +43,7 @@ public class Parser {
                 in.close();
             }
             boolean changed = false;
-            for(AbstractParserConfig config : configList){
+            for(AbstractMethodManipulator config : configList){
                 changed = verarbeite(cu, config) || changed;
             }
             if (changed) {
@@ -57,9 +58,9 @@ public class Parser {
         System.out.println(anzahl + " Files changed!");
     }
 
-    private boolean verarbeite(CompilationUnit cu, AbstractParserConfig config) {
+    private boolean verarbeite(CompilationUnit cu, AbstractMethodManipulator config) {
         boolean changed = false;
-        //Nur bestimmte Klassen
+        //check if class is to change
         boolean klasseBearbeiten = cu.getTypes().stream()
                 .filter(t -> t instanceof ClassOrInterfaceDeclaration)
                 .map(t -> (ClassOrInterfaceDeclaration) t)
@@ -84,7 +85,7 @@ public class Parser {
         this.destPath = destPath;
     }
 
-    public void addConfig(AbstractParserConfig config){
+    public void addConfig(AbstractMethodManipulator config){
         configList.add(config);
     }
 

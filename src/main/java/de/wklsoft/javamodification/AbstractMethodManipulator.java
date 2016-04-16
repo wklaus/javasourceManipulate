@@ -12,7 +12,7 @@ import java.util.function.Predicate;
  * Base Class for manipulation
  * Created by wkl on 16.04.16.
  */
-public abstract class AbstractParserConfig {
+public abstract class AbstractMethodManipulator {
 
     /**
      * Do the manipulation of the source
