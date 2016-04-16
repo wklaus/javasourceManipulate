@@ -19,7 +19,7 @@ public class Parser {
     public static void main(String[] args) throws Exception {
         int anzahl=0;
         Parser parser = new Parser();
-        File f=new File("/Users/wkl/Dev/steilmann/javaparser/src/test/resources/BetriebHelper.java");
+        File f=new File("src/test/resources/BetriebHelper.java");
 
         FileInputStream in = new FileInputStream(f);
 
