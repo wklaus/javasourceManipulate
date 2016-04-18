@@ -7,6 +7,7 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Some Helper-Methods
@@ -27,13 +28,33 @@ public class ParserHelper {
         return toChange;
     }
 
+    public static  boolean checkExtends(ClassOrInterfaceDeclaration type, Pattern pattern) {
+        boolean toChange = false;
+        List<ClassOrInterfaceType> anExtends = ((ClassOrInterfaceDeclaration) type).getExtends();
+        for (ClassOrInterfaceType anExtend : anExtends) {
+            if (pattern.matcher(anExtend.getName()).matches()) {
+                toChange = true;
+                break;
+            }
+        }
+        return toChange;
+    }
+
     public static boolean addImportIfMissing(CompilationUnit cu, String clzImport){
         boolean changed = false;
-        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr(clzImport),false,false);
-        if(!cu.getImports().contains(importDeclaration)){
-            cu.getImports().add(importDeclaration);
-            changed = true;
+        List<ImportDeclaration> imports = cu.getImports();
+        int pos=0;
+        for (int i=0;i<imports.size();i++) {
+            ImportDeclaration anImport = imports.get(i);
+            if(anImport.getName().getName().indexOf("java.")>-1){
+                pos=i;
+            }
+            if(anImport.getName().getName().equalsIgnoreCase(clzImport)){
+                return changed;
+            }
         }
+        cu.getImports().add(pos,new ImportDeclaration(new NameExpr(clzImport),false,false));
+        changed = true;
         return changed;
     }
 }
