@@ -24,8 +24,21 @@ public class Parser {
     private List<SourceManipulator> configList = new ArrayList<>();
     Predicate<ClassOrInterfaceDeclaration> klassenFilter;
 
-    public Parser(Predicate<ClassOrInterfaceDeclaration> klassenFilter){
+    public Parser(String[] args,Predicate<ClassOrInterfaceDeclaration> klassenFilter){
         this.klassenFilter = klassenFilter;
+
+        for(int i=0;i<args.length;i++) {
+            if("-d".equals(args[i])){
+                dryRun();
+            }
+            if("-p".equals(args[i])){
+                setSourcePath(args[i + 1]);
+            }
+            if("-t".equals(args[i])){
+                setDestPath(args[i+1]);
+            }
+
+        }
     }
 
     public void run() throws Exception {
@@ -95,4 +108,7 @@ public class Parser {
         return klassenFilter;
     }
 
+    public void setKlassenFilter(Predicate<ClassOrInterfaceDeclaration> klassenFilter) {
+        this.klassenFilter = klassenFilter;
+    }
 }

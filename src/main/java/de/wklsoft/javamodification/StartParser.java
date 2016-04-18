@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 public class StartParser {
     public static void main(String[] args) throws Exception {
 
-        Parser parser = new Parser(new Predicate<ClassOrInterfaceDeclaration>() {
+        Parser parser = new Parser(args,new Predicate<ClassOrInterfaceDeclaration>() {
             //Which classes to manipulate
             @Override
             public boolean test(ClassOrInterfaceDeclaration clazz) {
