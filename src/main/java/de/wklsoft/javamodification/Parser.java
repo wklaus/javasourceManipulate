@@ -64,7 +64,11 @@ public class Parser {
             if (changed) {
                 anzahl++;
                 if(!dryRun){
-                    FileUtils.writeStringToFile(new File(destPath + file.getName()), cu.toString(), "UTF-8");
+                    File destFile=file;
+                    if(destPath!=null){
+                        destFile = new File(destPath+file.getName());
+                    }
+                    FileUtils.writeStringToFile(destFile, cu.toString(), "UTF-8");
                 }
                 System.out.println(cu);
             }
@@ -96,6 +100,10 @@ public class Parser {
         this.sourcePath = sourcePath;
     }
 
+    /**
+     * Path where changed File is written.
+     * @param destPath  if null the source File would be overwritten
+     */
     public void setDestPath(String destPath){
         this.destPath = destPath;
     }
