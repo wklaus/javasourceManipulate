@@ -44,6 +44,7 @@ public class Parser {
     public void run() throws Exception {
         int anzahl = 0;
         Collection<File> files = FileUtils.listFiles(new File(sourcePath), extension, true);
+        System.out.println(files.size()+" Files found");
         for (File file : files) {
             if(file.getPath().indexOf("target")>-1){
                 continue;

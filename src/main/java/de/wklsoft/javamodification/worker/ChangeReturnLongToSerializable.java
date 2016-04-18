@@ -1,5 +1,7 @@
 package de.wklsoft.javamodification.worker;
 
+import java.util.List;
+
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.ModifierSet;
@@ -7,16 +9,14 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
-import de.wklsoft.javamodification.SourceMethodManipulator;
 import de.wklsoft.javamodification.ParserHelper;
-
-import java.util.List;
+import de.wklsoft.javamodification.SourceMethodManipulator;
 
 /**
  * Define which classes to manipulate.
  * Created by wkl on 16.04.16.
  */
-public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
+public class ChangeReturnLongToSerializable extends SourceMethodManipulator {
 
 
     private final String methodName;
@@ -25,7 +25,7 @@ public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
      *
      * @param methodName the name of the Method to change. If null every Methods with a Parameter of Type Long is changed
      */
-    public ChangeParameterLongToSerializable(String methodName){
+    public ChangeReturnLongToSerializable(String methodName){
         this.methodName = methodName;
     }
 
@@ -41,24 +41,16 @@ public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
      */
     public  boolean changeMethod(MethodDeclaration method) {
         boolean changed = false;
-        List<Parameter> parameters = method.getParameters();
         if(methodName!=null && ! method.getName().equalsIgnoreCase(methodName)){
             return changed;
         }
-
         if(!ModifierSet.isPublic(method.getModifiers())){
             return changed;
         }
 
-        for (Parameter parameter : parameters) {
-            Type type = parameter.getType();
-            if(type instanceof ReferenceType){
-                if (((ClassOrInterfaceType) ((ReferenceType) type).getType()).getName().equals("Long")) {
-                    parameter.setType(new ClassOrInterfaceType("Serializable"));
-                    changed = true;
-                }
-            }
-
+        if (((ClassOrInterfaceType) ((ReferenceType) method.getType()).getType()).getName().equals("Long")) {
+            method.setType(new ClassOrInterfaceType("Serializable"));
+            changed = true;
         }
         return changed;
     }

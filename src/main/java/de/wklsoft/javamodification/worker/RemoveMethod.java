@@ -2,6 +2,7 @@ package de.wklsoft.javamodification.worker;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.ModifierSet;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import de.wklsoft.javamodification.SourceManipulator;
 
@@ -27,7 +28,7 @@ public class RemoveMethod implements SourceManipulator {
             List<MethodDeclaration> methoden = type.getMembers().stream().filter(member -> member instanceof MethodDeclaration).map(member -> (MethodDeclaration) member).
                     collect(Collectors.toList());
             for (MethodDeclaration methodDeclaration : methoden) {
-                if(methodDeclaration.getName().equalsIgnoreCase(name)){
+                if(methodDeclaration.getName().equalsIgnoreCase(name) && ModifierSet.isPublic(methodDeclaration.getModifiers())){
                     type.getMembers().remove(methodDeclaration);
                     changed = true;
                 }

@@ -1,6 +1,7 @@
 package de.wklsoft.javamodification.worker;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.ModifierSet;
 import de.wklsoft.javamodification.SourceMethodManipulator;
 
 /**
@@ -19,6 +20,9 @@ public class ChangeMethodeName extends SourceMethodManipulator {
     @Override
     public boolean changeMethod(MethodDeclaration method) {
         boolean changed = false;
+        if(!ModifierSet.isPublic(method.getModifiers())){
+            return changed;
+        }
         if(method.getName().equalsIgnoreCase(oldName)){
             method.setName(newName);
             changed = true;
