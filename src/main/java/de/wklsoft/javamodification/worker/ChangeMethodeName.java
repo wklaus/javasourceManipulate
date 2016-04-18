@@ -8,12 +8,19 @@ import de.wklsoft.javamodification.SourceMethodManipulator;
  */
 public class ChangeMethodeName extends SourceMethodManipulator {
 
+    private final String oldName;
+    private final String newName;
+
+    public ChangeMethodeName(String oldName, String newName){
+        this.oldName = oldName;
+        this.newName = newName;
+    }
 
     @Override
     public boolean changeMethod(MethodDeclaration method) {
         boolean changed = false;
-        if(method.getName().endsWith("C")){
-            method.setName("methodeZ");
+        if(method.getName().equalsIgnoreCase(oldName)){
+            method.setName(newName);
             changed = true;
         }
 

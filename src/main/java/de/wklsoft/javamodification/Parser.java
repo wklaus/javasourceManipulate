@@ -32,8 +32,10 @@ public class Parser {
         int anzahl = 0;
         Collection<File> files = FileUtils.listFiles(new File(sourcePath), extension, true);
         for (File file : files) {
+            if(file.getPath().indexOf("target")>-1){
+                continue;
+            }
             FileInputStream in = new FileInputStream(file);
-
 
             CompilationUnit cu;
             try {

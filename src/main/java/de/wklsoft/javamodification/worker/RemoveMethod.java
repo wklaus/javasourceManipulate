@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
  * Created by wkl on 16.04.16.
  */
 public class RemoveMethod implements SourceManipulator {
+    private String name ;
+
+    public RemoveMethod(String name){
+        this.name=name;
+    }
     @Override
     public boolean change(CompilationUnit cu) {
         boolean changed = false;
@@ -22,7 +27,7 @@ public class RemoveMethod implements SourceManipulator {
             List<MethodDeclaration> methoden = type.getMembers().stream().filter(member -> member instanceof MethodDeclaration).map(member -> (MethodDeclaration) member).
                     collect(Collectors.toList());
             for (MethodDeclaration methodDeclaration : methoden) {
-                if(methodDeclaration.getName().equals("deleteMe")){
+                if(methodDeclaration.getName().equalsIgnoreCase(name)){
                     type.getMembers().remove(methodDeclaration);
                     changed = true;
                 }

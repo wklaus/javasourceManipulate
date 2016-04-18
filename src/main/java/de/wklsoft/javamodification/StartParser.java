@@ -35,9 +35,9 @@ public class StartParser {
 
         }
 
-        parser.addConfig(new ChangeParameterLongToSerializable());
-        parser.addConfig(new ChangeMethodeName());
-        parser.addConfig(new RemoveMethod());
+        parser.addConfig(new ChangeParameterLongToSerializable(null));
+        parser.addConfig(new ChangeMethodeName("methodeC","methodeZ"));
+        parser.addConfig(new RemoveMethod("deleteMe"));
         parser.run();
     }
 

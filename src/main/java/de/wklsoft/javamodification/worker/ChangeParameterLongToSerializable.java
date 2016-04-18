@@ -18,6 +18,16 @@ import java.util.List;
 public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
 
 
+    private final String methodName;
+
+    /**
+     *
+     * @param methodName the name of the Method to change. If null every Methods with a Parameter of Type Long is changed
+     */
+    public ChangeParameterLongToSerializable(String methodName){
+        this.methodName = methodName;
+    }
+
 
     public boolean modifyImport(CompilationUnit cu){
         return ParserHelper.addImportIfMissing(cu, "java.io.Serializable");
@@ -31,6 +41,10 @@ public class ChangeParameterLongToSerializable extends SourceMethodManipulator {
     public  boolean changeMethod(MethodDeclaration method) {
         boolean changed = false;
         List<Parameter> parameters = method.getParameters();
+        if(methodName!=null && ! method.getName().equalsIgnoreCase(methodName)){
+            return changed;
+        }
+
         for (Parameter parameter : parameters) {
             Type type = parameter.getType();
             if(type instanceof ReferenceType){
