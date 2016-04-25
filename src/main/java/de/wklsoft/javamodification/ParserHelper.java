@@ -6,6 +6,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -54,6 +55,23 @@ public class ParserHelper {
             }
         }
         cu.getImports().add(pos,new ImportDeclaration(new NameExpr(clzImport),false,false));
+        changed = true;
+        return changed;
+    }
+
+    public static boolean removeImport(CompilationUnit cu, String clzImport){
+        boolean changed = false;
+        List<ImportDeclaration> imports = new ArrayList<>(cu.getImports());
+        ImportDeclaration toRemove = null;
+        for (int i=0;i<imports.size();i++) {
+            ImportDeclaration anImport = imports.get(i);
+            if(anImport.getName().getName().equalsIgnoreCase(clzImport)){
+                toRemove=anImport;
+            }
+        }
+        if(toRemove!=null){
+            cu.getImports().remove(toRemove);
+        }
         changed = true;
         return changed;
     }
